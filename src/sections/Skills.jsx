@@ -1,197 +1,85 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './Skills.css';
 
 const Skills = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('frontend');
 
-  const skillsData = {
-    frontend: [
-      { name: 'React', level: 95, icon: '⚛️' },
-      { name: 'JavaScript (ES6+)', level: 90, icon: '⚡' },
-      { name: 'HTML5 & CSS3', level: 90, icon: '🎨' },
-      { name: 'Redux', level: 85, icon: '🔄' },
-      { name: 'Responsive Design', level: 90, icon: '📱' }
-    ],
-    backend: [
-      { name: 'Node.js', level: 85, icon: '🟢' },
-      { name: 'Express', level: 80, icon: '🚂' },
-      { name: 'REST APIs', level: 90, icon: '🔌' },
-      { name: 'GraphQL', level: 80, icon: '📊' },
-      { name: 'Microservices', level: 85, icon: '🏗️' }
-    ],
-    databases: [
-      { name: 'SQL', level: 85, icon: '🗄️' },
-      { name: 'MySQL', level: 85, icon: '🐬' },
-      { name: 'PostgreSQL', level: 80, icon: '🐘' },
-      { name: 'MongoDB', level: 80, icon: '🍃' },
-      { name: 'NoSQL', level: 80, icon: '📦' }
-    ],
-    cloud: [
-      { name: 'AWS', level: 85, icon: '☁️' },
-      { name: 'Docker', level: 80, icon: '🐳' },
-      { name: 'Kubernetes', level: 75, icon: '⚓' },
-      { name: 'CI/CD', level: 85, icon: '🔄' },
-      { name: 'GCP', level: 70, icon: '☁️' }
-    ],
-    tools: [
-      { name: 'Git & GitHub', level: 90, icon: '📚' },
-      { name: 'VS Code', level: 95, icon: '💻' },
-      { name: 'Postman', level: 90, icon: '📮' },
-      { name: 'Jenkins', level: 80, icon: '🔨' },
-      { name: 'IntelliJ IDEA', level: 85, icon: '💡' }
-    ]
+  const categories = {
+    frontend: {
+      label: 'Frontend', icon: '⚛️', color: '#00D4FF',
+      skills: ['React.js','JavaScript (ES6+)','HTML5','CSS3','Bootstrap','Redux']
+    },
+    backend: {
+      label: 'Backend', icon: '🚀', color: '#FF4D6D',
+      skills: ['Node.js','Express.js','REST APIs','Python','Java','MVC Architecture']
+    },
+    databases: {
+      label: 'Databases', icon: '🗄️', color: '#9B5DE5',
+      skills: ['MongoDB','MySQL','PostgreSQL','Firebase','SQL']
+    },
+    cloud: {
+      label: 'Cloud & Tools', icon: '☁️', color: '#FFD60A',
+      skills: ['AWS','Google Cloud Platform','Git','GitHub','VS Code']
+    },
+    data: {
+      label: 'Data & ML', icon: '🤖', color: '#B5FF4D',
+      skills: ['Python','Tableau','OpenCV','MediaPipe','Machine Learning','Data Visualization']
+    },
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
-  const SkillBar = ({ skill, index }) => (
-    <div 
-      className="skill-item"
-      style={{ animationDelay: `${index * 0.1}s` }}
-    >
-      <div className="skill-header">
-        <div className="skill-name">
-          <span className="skill-icon">{skill.icon}</span>
-          <span>{skill.name}</span>
-        </div>
-        <span className="skill-percentage">{skill.level}%</span>
-      </div>
-      <div className="skill-bar">
-        <div 
-          className={`skill-progress ${isVisible ? 'animate' : ''}`}
-          style={{ 
-            '--skill-level': `${skill.level}%`,
-            animationDelay: `${index * 0.1}s`
-          }}
-        />
-      </div>
-    </div>
-  );
+  const langs = ['Python', 'Java', 'JavaScript', 'C', 'C++'];
 
   return (
-    <section className="skills" id="skills" ref={sectionRef}>
+    <section className="skills" id="skills">
       <div className="skills-container">
-        <div className="section-header">
-          <span className="section-label">Technical Expertise</span>
-          <h2 className="section-title">Skills & Technologies</h2>
-          <p className="section-description">
-            A comprehensive overview of my technical skills across the full stack, 
-            from frontend frameworks to cloud infrastructure.
-          </p>
+        <div className="skills-header">
+          <div className="section-badge">Technical Skills</div>
+          <h2 className="section-title">Skills & <span className="grad-text-electric">Technologies</span></h2>
+          <p className="skills-desc">A broad toolkit spanning full-stack development, cloud, machine learning, and data analytics.</p>
         </div>
 
-        <div className="skills-grid">
-          <div className="skills-category">
-            <div className="category-header">
-              <h3 className="category-title">
-                <span className="category-icon">⚛️</span>
-                Frontend Technologies
-              </h3>
-            </div>
-            <div className="skills-list">
-              {skillsData.frontend.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index} />
-              ))}
-            </div>
-          </div>
+        <div className="skills-tabs">
+          {Object.entries(categories).map(([key, cat]) => (
+            <button
+              key={key}
+              className={`skills-tab ${activeTab === key ? 'active' : ''}`}
+              onClick={() => setActiveTab(key)}
+              style={{ '--tab-color': cat.color }}
+            >
+              <span>{cat.icon}</span> {cat.label}
+            </button>
+          ))}
+        </div>
 
-          <div className="skills-category">
-            <div className="category-header">
-              <h3 className="category-title">
-                <span className="category-icon">🚀</span>
-                Backend Technologies
-              </h3>
-            </div>
-            <div className="skills-list">
-              {skillsData.backend.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index} />
+        <div className="skills-panel">
+          {Object.entries(categories).map(([key, cat]) => (
+            <div key={key} className={`skills-grid-panel ${activeTab === key ? 'visible' : ''}`}>
+              {cat.skills.map((skill, i) => (
+                <div key={skill} className="skill-pill" style={{ '--pill-color': cat.color, animationDelay: `${i * 0.05}s` }}>
+                  <div className="skill-pill-dot" />
+                  {skill}
+                </div>
               ))}
             </div>
-          </div>
+          ))}
+        </div>
 
-          <div className="skills-category">
-            <div className="category-header">
-              <h3 className="category-title">
-                <span className="category-icon">🗄️</span>
-                Databases
-              </h3>
-            </div>
-            <div className="skills-list">
-              {skillsData.databases.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index} />
-              ))}
-            </div>
-          </div>
-
-          <div className="skills-category">
-            <div className="category-header">
-              <h3 className="category-title">
-                <span className="category-icon">☁️</span>
-                Cloud & DevOps
-              </h3>
-            </div>
-            <div className="skills-list">
-              {skillsData.cloud.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index} />
-              ))}
-            </div>
-          </div>
-
-          <div className="skills-category">
-            <div className="category-header">
-              <h3 className="category-title">
-                <span className="category-icon">🛠️</span>
-                Tools & Platforms
-              </h3>
-            </div>
-            <div className="skills-list">
-              {skillsData.tools.map((skill, index) => (
-                <SkillBar key={skill.name} skill={skill} index={index} />
-              ))}
-            </div>
+        <div className="langs-section">
+          <div className="langs-label">Programming Languages</div>
+          <div className="langs-row">
+            {langs.map((l, i) => (
+              <div key={l} className="lang-badge" style={{ animationDelay: `${i * 0.08}s` }}>{l}</div>
+            ))}
           </div>
         </div>
 
-        <div className="additional-skills">
-          <h3 className="additional-title">Additional Expertise</h3>
-          <div className="skills-tags">
-            <span className="skill-tag">JWT Authentication</span>
-            <span className="skill-tag">SoapUI</span>
-            <span className="skill-tag">JUnit</span>
-            <span className="skill-tag">Mockito</span>
-            <span className="skill-tag">AWS Lambda</span>
-            <span className="skill-tag">AWS S3</span>
-            <span className="skill-tag">AWS EC2</span>
-            <span className="skill-tag">AWS EKS</span>
-            <span className="skill-tag">ELK Stack</span>
-            <span className="skill-tag">CloudFormation</span>
-            <span className="skill-tag">GitHub Actions</span>
-            <span className="skill-tag">Agile/Scrum</span>
-          </div>
+        <div className="method-row">
+          {['Agile / Scrum','MVC Architecture','RESTful Design','CI/CD Pipelines','Version Control (Git)'].map(m => (
+            <div key={m} className="method-tag">{m}</div>
+          ))}
         </div>
       </div>
     </section>
   );
 };
-
 export default Skills;
