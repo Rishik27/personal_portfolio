@@ -75,8 +75,7 @@ const Contact = () => {
             Let's <span className="grad-text-fire">Work Together</span>
           </h2>
           <p className="contact-intro">
-            I'm open to new opportunities and exciting projects. Feel free to
-            reach out!
+            I'm open to new opportunities and exciting roles.
           </p>
         </div>
 
@@ -85,7 +84,7 @@ const Contact = () => {
             <div className="contact-tagline">
               Based in <strong>Hyderabad, Telangana</strong>
               <br />
-              Open to remote roles worldwide
+              Open to remote roles and Onsite opportunities in India.
             </div>
             <div className="contact-links">
               {links.map((l) => (
